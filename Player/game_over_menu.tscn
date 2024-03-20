@@ -1,0 +1,67 @@
+[gd_scene load_steps=8 format=3 uid="uid://ceaerapkv40lk"]
+
+[ext_resource type="FontFile" uid="uid://d4eu4k711yvbm" path="res://Assets/MadimiOne-Regular.ttf" id="1_4xvxh"]
+[ext_resource type="Script" path="res://Player/game_over_menu.gd" id="2_vkmlk"]
+[ext_resource type="Shader" uid="uid://cjmdboeupkyqk" path="res://Player/game_over_menu.tres" id="3_hhkcg"]
+
+[sub_resource type="Theme" id="Theme_ybjhr"]
+default_font = ExtResource("1_4xvxh")
+default_font_size = 64
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rm4sw"]
+shader = ExtResource("3_hhkcg")
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_wpgxo"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_4d74w"]
+font_size = 96
+
+[node name="GameOverMenu" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_ybjhr")
+script = ExtResource("2_vkmlk")
+
+[node name="BackgroundBlur" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_rm4sw")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("PlaceholderTexture2D_wpgxo")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(512, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "You're Dead!"
+label_settings = SubResource("LabelSettings_4d74w")
+horizontal_alignment = 1
+
+[node name="RestartButton" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Again?"
+
+[node name="QuitButton" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "I'm done"
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
