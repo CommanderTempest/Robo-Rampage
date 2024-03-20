@@ -1,10 +1,16 @@
-[gd_scene load_steps=10 format=3 uid="uid://r28rngkq1aup"]
+[gd_scene load_steps=18 format=3 uid="uid://r28rngkq1aup"]
 
 [ext_resource type="Material" uid="uid://cvbyu3btcpy63" path="res://Levels/Materials/Grey.tres" id="1_7uco5"]
 [ext_resource type="PackedScene" uid="uid://ctmrgukwtbcng" path="res://Pickups/pickup.tscn" id="2_guvkg"]
 [ext_resource type="PackedScene" uid="uid://djrtauwcadbm0" path="res://Pickups/small_bullet_pickup.tscn" id="3_lryu5"]
 [ext_resource type="PackedScene" uid="uid://c8bs6s0c2783j" path="res://Enemy/enemy.tscn" id="4_h74wc"]
 [ext_resource type="PackedScene" uid="uid://dr4t02eyl4xrn" path="res://Player/player.tscn" id="5_bvdjp"]
+[ext_resource type="PackedScene" uid="uid://bpneql535k3dc" path="res://Assets/Props/Monitor.glb" id="6_7ji8e"]
+[ext_resource type="PackedScene" uid="uid://b7eaxhimd3w82" path="res://Hazards/lava.tscn" id="6_cvwwa"]
+[ext_resource type="PackedScene" uid="uid://hqieaweopdkg" path="res://Assets/Props/Light.glb" id="7_n5h4r"]
+[ext_resource type="PackedScene" uid="uid://by5jfjvqhx0y2" path="res://Assets/Props/Generator.glb" id="8_mtfpm"]
+[ext_resource type="PackedScene" uid="uid://dg17yod5pvp10" path="res://Assets/Props/Pipes.glb" id="9_wmnvl"]
+[ext_resource type="PackedScene" uid="uid://cpbfw020yl2hl" path="res://Assets/Props/FloorTile.glb" id="10_sgrjw"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_77edk"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -25,6 +31,13 @@ polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1), PackedInt32Arr
 agent_max_climb = 5.0
 agent_max_slope = 90.0
 filter_ledge_spans = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_qqr5s"]
+resource_local_to_scene = true
+size = Vector2(10, 10)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_hi0l2"]
+points = PackedVector3Array(-5, 0, -5, -5, 0, 5, 5, 0, -5, 5, 0, 5)
 
 [node name="MainLevel" type="Node3D"]
 
@@ -189,3 +202,43 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 2.1, -9.5)
 operation = 2
 flip_faces = true
 size = Vector3(24, 4, 3)
+
+[node name="Monitor" parent="NavigationRegion3D/Level Objects" instance=ExtResource("6_7ji8e")]
+transform = Transform3D(0.3, 0, 0, 0, 1, 0, 0, 0, 1, 1.48193, 1.9, -5)
+
+[node name="Light" parent="NavigationRegion3D/Level Objects" instance=ExtResource("7_n5h4r")]
+transform = Transform3D(0.1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+
+[node name="Generator" parent="NavigationRegion3D/Level Objects" instance=ExtResource("8_mtfpm")]
+transform = Transform3D(0.1, 0, 0, 0, 1, 0, 0, 0, 1, 0.349398, 1, -2.6)
+
+[node name="Pipes" parent="NavigationRegion3D/Level Objects" instance=ExtResource("9_wmnvl")]
+transform = Transform3D(0.3, 0, 0, 0, 0, 1, 0, -2, 0, 1.08434, 0, 2.3)
+
+[node name="FloorTile" parent="NavigationRegion3D/Level Objects" instance=ExtResource("10_sgrjw")]
+transform = Transform3D(0.2, 0, 0, 0, 1, 0, 0, 0, 1, 0.0361446, 0, 0)
+
+[node name="FloorTile2" parent="NavigationRegion3D/Level Objects" instance=ExtResource("10_sgrjw")]
+transform = Transform3D(0.08, 0, 0, 0, 1, 0, 0, 0, 0.8, 0.0361446, 0, -2.2)
+
+[node name="FloorTile3" parent="NavigationRegion3D/Level Objects" instance=ExtResource("10_sgrjw")]
+transform = Transform3D(0.08, 0, 0, 0, 1, 0, 0, 0, 0.8, -0.0120482, 0, -5.2)
+
+[node name="FloorTile4" parent="NavigationRegion3D/Level Objects" instance=ExtResource("10_sgrjw")]
+transform = Transform3D(0.08, 0, 0, 0, 1, 0, 0, 0, 0.8, 0.0240964, 0, -8.2)
+
+[node name="LavaPools" type="Node3D" parent="."]
+
+[node name="Lava" parent="LavaPools" instance=ExtResource("6_cvwwa")]
+transform = Transform3D(1.45, 0, 0, 0, 1, 0, 0, 0, 0.6, 18.4949, 2.02107, -14.9673)
+
+[node name="MeshInstance3D" parent="LavaPools/Lava" index="0"]
+mesh = SubResource("PlaneMesh_qqr5s")
+
+[node name="OmniLight3D" parent="LavaPools/Lava" index="1"]
+omni_range = 25.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LavaPools/Lava"]
+shape = SubResource("ConvexPolygonShape3D_hi0l2")
+
+[editable path="LavaPools/Lava"]
